@@ -10,58 +10,29 @@ import java.util.function.Consumer;
 public class EvenNumIt implements Iterator<Integer> {
     private final int[] data;
     private int point = 0;
-    private int countEvNum;
 
     public EvenNumIt(int[] data) {
         this.data = data;
-        countEvNum = countEvenNum();
     }
 
     @Override
     public boolean hasNext() {
-        if (countEvNum == 0) {
-            return false;
+        for (int i = point; i < data.length; i++) {
+            if (data[i] % 2 == 0) {
+                point = i;
+                break;
+            }
+            point++;
         }
-        catchEvenNum();
-        return point++ < data.length;
+        return point < data.length;
     }
 
     @Override
     public Integer next() {
-        if (countEvNum == 0) {
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        catchEvenNum();
         return data[point++];
-    }
-
-    /**
-     * Находим текущее четное число.
-     *
-     * @return есть или нет.
-     */
-    private int countEvenNum() {
-        int rsl = 0;
-        for (int datum : data) {
-            if (datum % 2 == 0) {
-                rsl++;
-            }
-        }
-        return rsl;
-    }
-
-    /**
-     * Считаем кол-во четных чисел в массиве.
-     */
-    private void catchEvenNum() {
-        for (int i = point; i < data.length; i++) {
-            point = i;
-            int a = data[i];
-            if (data[i] % 2 == 0) {
-                countEvNum--;
-                break;
-            }
-        }
     }
 
     @Override
