@@ -9,66 +9,34 @@ import java.util.function.Consumer;
  */
 public class MatrixArrayIt implements Iterator<Integer> {
     private final int[][] data;
-    private int count;
-    private int pointX = 0;
-    private int pointY = 0;
+    private int row = 0;
+    private int column = 0;
 
     public MatrixArrayIt(int[][] data) {
         this.data = data;
-        count = checkPoint();
     }
 
     @Override
     public boolean hasNext() {
-        boolean rsl = false;
-        if (count == 0) {
-            throw new NoSuchElementException();
+        if (column == data.length - 1 && data[column].length > 0) {
+            return row < data[column].length;
         }
-        if (count > 0) {
-            rsl = true;
-            count--;
+        if (row == data[column].length) {
+            row = 0;
+            column++;
         }
-        return rsl;
+        while (column < data.length - 1 && data[column].length == 0) {
+            column++;
+        }
+        return column < data.length && row < data[column].length;
     }
 
     @Override
     public Integer next() {
-        if (count == 0) {
+        if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        int currentMassive = checkMassiveLength(data, pointX);
-        if (currentMassive == pointY) {
-            pointX++;
-            pointY = 0;
-        }
-        count--;
-        return data[pointX][pointY++];
-    }
-
-    /**
-     * Считаем кол-во элементнов в data.
-     *
-     * @return кол-во элементов.
-     */
-    private int checkPoint() {
-        int count = 0;
-        for (int[] datum : data) {
-            for (int ignored : datum) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    /**
-     * Находим длину текущего массива.
-     *
-     * @param massive data.
-     * @param row     ряд.
-     * @return длина массива.
-     */
-    private int checkMassiveLength(int[][] massive, int row) {
-        return massive[row].length;
+        return data[column][row++];
     }
 
     @Override
@@ -81,3 +49,5 @@ public class MatrixArrayIt implements Iterator<Integer> {
         throw new UnsupportedOperationException();
     }
 }
+
+

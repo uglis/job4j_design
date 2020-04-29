@@ -30,10 +30,10 @@ public class MatrixArrayItTest {
     @Test
     public void whenOneEl() {
         int[][] input = {
-                {3, 4},
+                {3},
                 {},
                 {},
-                {}
+                {4}
         };
         MatrixArrayIt arrayIt = new MatrixArrayIt(input);
         assertThat(arrayIt.hasNext(), is(true));
@@ -50,13 +50,79 @@ public class MatrixArrayItTest {
         arrayIt.next();
     }
 
-    @Test(expected = NoSuchElementException.class)
-    public void whenNoHasNext() {
-        int[][] input = {
-                {},
+    @Test
+    public void when4El() {
+        int[][] in = {
+                {1}
+        };
+        MatrixArrayIt it = new MatrixArrayIt(in);
+        assertThat(it.next(), is(1));
+    }
+
+    @Test
+    public void whenFirstEmptyThenNext() {
+        int[][] in = {
+                {}, {1}
+        };
+        MatrixArrayIt it = new MatrixArrayIt(in);
+        assertThat(it.next(), is(1));
+    }
+
+    @Test
+    public void whenFirstEmptyThenHashNext() {
+        int[][] in = {
+                {}, {1}
+        };
+        MatrixArrayIt it = new MatrixArrayIt(in);
+        assertThat(it.hasNext(), is(true));
+    }
+
+    @Test
+    public void whenRowHasDiffSize() {
+        int[][] in = {
+                {1}, {2, 3}
+        };
+        MatrixArrayIt it = new MatrixArrayIt(in);
+        assertThat(it.next(), is(1));
+        assertThat(it.next(), is(2));
+        assertThat(it.next(), is(3));
+    }
+
+    @Test
+    public void whenFewEmpty() {
+        int[][] in = {
+                {1}, {}, {}, {}, {2}
+        };
+        MatrixArrayIt it = new MatrixArrayIt(in);
+        assertThat(it.next(), is(1));
+        assertThat(it.next(), is(2));
+    }
+
+    @Test
+    public void whenEmpty() {
+        int[][] in = {
                 {}
         };
-        MatrixArrayIt arrayIt = new MatrixArrayIt(input);
-        arrayIt.hasNext();
+        MatrixArrayIt it = new MatrixArrayIt(in);
+        assertThat(it.hasNext(), is(false));
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void whenEmptyThenNext() {
+        int[][] in = {
+                {}
+        };
+        MatrixArrayIt it = new MatrixArrayIt(in);
+        it.next();
+    }
+
+    @Test
+    public void whenMultiHashNext() {
+        int[][] in = {
+                {}, {1}
+        };
+        MatrixArrayIt it = new MatrixArrayIt(in);
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.hasNext(), is(true));
     }
 }
