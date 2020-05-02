@@ -1,6 +1,7 @@
 package ru.job4j.collection;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * 4. Используя контейнер на базе связанного списка создать контейнер Stack [#279207]
@@ -10,6 +11,9 @@ public class SimpleStack<T> {
 
     public T pop() {
         T t = findLast();
+        if (t == null) {
+            throw new NoSuchElementException("Нет элементов в контейнере");
+        }
         deleteLast();
         return t;
     }
@@ -24,6 +28,9 @@ public class SimpleStack<T> {
     public void deleteLast() {
         ForwardLinked<T> temp = new ForwardLinked<>();
         T t = findLast();
+        if (t == null) {
+            return;
+        }
         Iterator<T> iterator = linked.iterator();
         while (iterator.hasNext()) {
             T element = iterator.next();
@@ -41,7 +48,7 @@ public class SimpleStack<T> {
      */
     public T findLast() {
         Iterator<T> it = linked.iterator();
-        T t = it.next();
+        T t = null;
         while (it.hasNext()) {
             t = it.next();
         }
