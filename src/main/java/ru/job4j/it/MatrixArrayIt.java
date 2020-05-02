@@ -18,17 +18,10 @@ public class MatrixArrayIt implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        if (column == data.length - 1 && data[column].length > 0) {
-            return row < data[column].length;
+        while (row < data.length && data[row].length == 0) {
+            row++;
         }
-        if (row == data[column].length) {
-            row = 0;
-            column++;
-        }
-        while (column < data.length - 1 && data[column].length == 0) {
-            column++;
-        }
-        return column < data.length && row < data[column].length;
+        return row < data.length && column < data[row].length;
     }
 
     @Override
@@ -36,17 +29,12 @@ public class MatrixArrayIt implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return data[column][row++];
-    }
-
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void forEachRemaining(Consumer<? super Integer> action) {
-        throw new UnsupportedOperationException();
+        int element = data[row][column++];
+        if (column == data[row].length) {
+            row++;
+            column = 0;
+        }
+        return element;
     }
 }
 
