@@ -52,7 +52,9 @@ public class SimpleStackTest {
         stack.push(30D);
         stack.push(40D);
         stack.push(50D);
-        assertThat(stack.findLast(), is(50D));
+        assertThat(stack.pop(), is(50D));
+        assertThat(stack.pop(), is(40D));
+        assertThat(stack.pop(), is(30D));
     }
 
     @Test(expected = NoSuchElementException.class)
