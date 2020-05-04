@@ -1,57 +1,50 @@
 package ru.job4j.collection;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * 2. Создать контейнер на базе связанного списка [#279209]
  */
 public class Container<E> implements Iterable<E> {
-    private Node<E>[] data;
-    private int point = 0;
+    private Node head;
+    private Node tail;
     private int modCount = 0;
 
-    public Container() {
-        this.data = new Node[0];
-    }
-
     public void add(E value) {
-        if (point == data.length) {
-            this.data = Arrays.copyOf(data, data.length + 1);
-        }
-        Node<E> e;
-        if (point == 0) {
-            e = new Node<>(null, value);
-        } else {
-            e = new Node<>(data[point - 1], value);
-        }
-        point++;
         modCount++;
-        this.data[data.length - 1] = e;
+        if (head == null) {
+            head = new Node(null, value, tail);
+        } else if (tail == null) {
+            tail = new Node(head, value, null);
+            head.next = tail;
+        } else {
+            Node node = new Node(tail, value, null);
+            tail.next = node;
+            tail = node;
+        }
     }
 
     public E get(int index) {
-        Objects.checkIndex(index, point);
-        return data[index].element;
-    }
-
-    public E getPrevious(int index) {
-        Objects.checkIndex(index, point);
-        return data[index].previous.element;
+        Objects.checkIndex(index, modCount);
+        Node node = head;
+        for (int i = 0; i < index; i++) {
+            node = node.next;
+        }
+        return node.e;
     }
 
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
-            final int expectCount = modCount;
-            int itCount = 0;
+            Node node = head;
+            final int expectedMod = modCount;
 
             @Override
             public boolean hasNext() {
-                if (expectCount != modCount) {
+                if (expectedMod != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return itCount < point;
+                return node != null;
             }
 
             @Override
@@ -59,28 +52,22 @@ public class Container<E> implements Iterable<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return (E) data[itCount++];
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public void forEachRemaining(Consumer<? super E> action) {
-                throw new UnsupportedOperationException();
+                E element = node.e;
+                node = node.next;
+                return element;
             }
         };
     }
 
-    private class Node<E> {
-        private final E element;
-        private final Node<E> previous;
+    class Node {
+        E e;
+        Node prev;
+        Node next;
 
-        public Node(Node<E> previous, E current) {
-            this.previous = previous;
-            this.element = current;
+        public Node(Node prev, E e, Node next) {
+            this.prev = prev;
+            this.e = e;
+            this.next = next;
         }
     }
 }

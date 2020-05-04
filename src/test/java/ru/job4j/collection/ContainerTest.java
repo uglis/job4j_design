@@ -28,13 +28,13 @@ public class ContainerTest {
     }
 
     @Test
-    public void whenPreviousIs4AndElIs5() {
+    public void when3IndexIs5() {
         Container<Integer> container = new Container<>();
         container.add(7);
         container.add(87);
         container.add(4);
         container.add(5);
-        assertThat(container.getPrevious(3), is(4));
+        assertThat(container.get(3), is(5));
     }
 
     @Test(expected = ConcurrentModificationException.class)
