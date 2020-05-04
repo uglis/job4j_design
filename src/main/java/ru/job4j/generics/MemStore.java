@@ -32,7 +32,13 @@ public class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean delete(String id) {
-        return false;
+        boolean rsl = false;
+        T t = findById(id);
+        if (t != null) {
+            data.remove(t);
+            rsl = true;
+        }
+        return rsl;
     }
 
     @Override
