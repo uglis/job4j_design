@@ -81,4 +81,10 @@ public class SimpleArrayTest {
         input.remove(2);
         assertNull(input.get(2));
     }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void whenEx() {
+        SimpleArray<Integer> input = new SimpleArray<>(0);
+        input.add(3);
+    }
 }

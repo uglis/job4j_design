@@ -18,6 +18,7 @@ public class SimpleArray<T> implements Iterator<T> {
     }
 
     public void add(T value) {
+        Objects.checkIndex(index, data.length);
         this.data[index++] = value;
     }
 
