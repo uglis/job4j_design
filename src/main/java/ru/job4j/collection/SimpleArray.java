@@ -7,13 +7,9 @@ import java.util.function.Consumer;
  * 1. Динамический список на массиве. [#279208]
  */
 public class SimpleArray<T> implements Iterable<T> {
-    private Object[] container;
+    private Object[] container = new Object[0];
     private int point = 0;
     private int modCount = 0;
-
-    public SimpleArray() {
-        this.container = new Object[0];
-    }
 
     public T get(int index) {
         Objects.checkIndex(index, point);
@@ -48,16 +44,6 @@ public class SimpleArray<T> implements Iterable<T> {
                     throw new NoSuchElementException();
                 }
                 return (T) container[itCount++];
-            }
-
-            @Override
-            public void remove() {
-                throw new UnsupportedOperationException();
-            }
-
-            @Override
-            public void forEachRemaining(Consumer<? super T> action) {
-                throw new UnsupportedOperationException();
             }
         };
     }
