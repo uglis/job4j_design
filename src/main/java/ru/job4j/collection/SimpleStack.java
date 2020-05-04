@@ -1,5 +1,6 @@
 package ru.job4j.collection;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -9,16 +10,10 @@ public class SimpleStack<T> {
     private ForwardLinked<T> linked = new ForwardLinked<T>();
 
     public T pop() {
-        T t = linked.deleteLast();
-        if (t == null) {
-            throw new NoSuchElementException("Нет элементов в контейнере");
-        }
-        return t;
+        return linked.deleteLast();
     }
 
     public void push(T value) {
         linked.add(value);
     }
-
-
 }
