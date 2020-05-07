@@ -2,6 +2,8 @@ package ru.job4j.generics;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
@@ -39,17 +41,18 @@ public class SimpleArrayTest {
         input.add('c');
         input.add('d');
         input.add('e');
-        assertThat(input.hasNext(), is(true));
-        assertThat(input.next(), is('a'));
-        assertThat(input.hasNext(), is(true));
-        assertThat(input.next(), is('b'));
-        assertThat(input.hasNext(), is(true));
-        assertThat(input.next(), is('c'));
-        assertThat(input.hasNext(), is(true));
-        assertThat(input.next(), is('d'));
-        assertThat(input.hasNext(), is(true));
-        assertThat(input.next(), is('e'));
-        assertThat(input.hasNext(), is(false));
+        Iterator<Character> it = input.iterator();
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is('a'));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is('b'));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is('c'));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is('d'));
+        assertThat(it.hasNext(), is(true));
+        assertThat(it.next(), is('e'));
+        assertThat(it.hasNext(), is(false));
     }
 
     @Test

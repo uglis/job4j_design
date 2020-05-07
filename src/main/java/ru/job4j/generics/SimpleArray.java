@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 /**
  * 5.2.1. Реализовать SimpleArray<T> [#279224]
  */
-public class SimpleArray<T> implements Iterator<T> {
+public class SimpleArray<T> implements Iterable<T> {
     private Object[] data;
     private int index = 0;
     private int availableEl = 0;
@@ -42,25 +42,20 @@ public class SimpleArray<T> implements Iterator<T> {
     }
 
     @Override
-    public boolean hasNext() {
-        return availableEl < index;
-    }
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            @Override
+            public boolean hasNext() {
+                return availableEl < index;
+            }
 
-    @Override
-    public T next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-        return (T) data[availableEl++];
-    }
-
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void forEachRemaining(Consumer<? super T> action) {
-        throw new UnsupportedOperationException();
+            @Override
+            public T next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return (T) data[availableEl++];
+            }
+        };
     }
 }
