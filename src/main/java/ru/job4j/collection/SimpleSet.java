@@ -10,12 +10,18 @@ public class SimpleSet<T> implements Iterable<T> {
     private SimpleArray<T> set = new SimpleArray<>();
 
     public void add(T value) {
+        if (!contains(value)) {
+            set.add(value);
+        }
+    }
+
+    public boolean contains(T value) {
         for (T t : set) {
             if (Objects.equals(t, value)) {
-                return;
+                return true;
             }
         }
-        set.add(value);
+        return false;
     }
 
     @Override
