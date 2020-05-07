@@ -1,5 +1,6 @@
 package ru.job4j.it;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -9,14 +10,12 @@ import java.util.NoSuchElementException;
 public class Converter {
     Iterator<Integer> convert(Iterator<Iterator<Integer>> it) {
         return new Iterator<>() {
-            Iterator<Integer> tempIt = it.next();
+            Iterator<Integer> tempIt = Collections.emptyIterator();
 
             @Override
             public boolean hasNext() {
-                if (!tempIt.hasNext()) {
                     while (!tempIt.hasNext() && it.hasNext()) {
                         tempIt = it.next();
-                    }
                 }
                 return tempIt.hasNext();
             }
