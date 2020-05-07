@@ -1,13 +1,12 @@
 package ru.job4j.collection;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * 1. Динамический список на массиве. [#279208]
  */
 public class SimpleArray<T> implements Iterable<T> {
-    private Object[] container = new Object[0];
+    private Object[] container = new Object[10];
     private int point = 0;
     private int modCount = 0;
 
@@ -19,7 +18,7 @@ public class SimpleArray<T> implements Iterable<T> {
     public void add(T model) {
         modCount++;
         if (point == container.length) {
-            this.container = Arrays.copyOf(container, container.length + 1);
+            this.container = Arrays.copyOf(container, container.length * 2);
         }
         this.container[point++] = model;
     }
