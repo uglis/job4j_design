@@ -13,11 +13,9 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> out = new SimpleStack<>();
 
     public T poll() {
-        try {
-            while (true) {
-                out.push(in.pop());
-            }
-        } catch (NoSuchElementException ignored) {
+        System.out.println(in.isEmpty());
+        while (!in.isEmpty()) {
+            out.push(in.pop());
         }
         return out.pop();
     }

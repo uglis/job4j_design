@@ -1,8 +1,5 @@
 package ru.job4j.collection;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 /**
  * 4. Используя контейнер на базе связанного списка создать контейнер Stack [#279207]
  */
@@ -15,5 +12,9 @@ public class SimpleStack<T> {
 
     public void push(T value) {
         linked.add(value);
+    }
+
+    public boolean isEmpty() {
+        return linked.getLength() < 1;
     }
 }
