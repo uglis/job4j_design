@@ -24,7 +24,7 @@ public class MemStore<T extends Base> implements Store<T> {
         boolean rsl = false;
         T t = findById(id);
         if (t != null) {
-            data.set(data.indexOf(t), model);
+            data.set(indexOf(id), model);
             rsl = true;
         }
         return rsl;
@@ -35,7 +35,7 @@ public class MemStore<T extends Base> implements Store<T> {
         boolean rsl = false;
         T t = findById(id);
         if (t != null) {
-            data.remove(t);
+            data.remove(indexOf(id));
             rsl = true;
         }
         return rsl;
@@ -47,6 +47,17 @@ public class MemStore<T extends Base> implements Store<T> {
         for (T datum : data) {
             if (datum.getId().equals(id)) {
                 rsl = datum;
+                break;
+            }
+        }
+        return rsl;
+    }
+
+    public int indexOf(String id) {
+        int rsl = -1;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getId().equals(id)) {
+                rsl = i;
                 break;
             }
         }
