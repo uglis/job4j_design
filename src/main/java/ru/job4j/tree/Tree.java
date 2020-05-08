@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Queue;
 
 /**
- * 1. Создать элементарную структуру дерева [#279242]
+ * 1. Создать элементарную структуру дерева [#279242].
  */
 public class Tree<E> implements SimpleTree<E> {
     private final Node<E> root;
