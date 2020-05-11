@@ -22,9 +22,9 @@ public class MemStore<T extends Base> implements Store<T> {
     @Override
     public boolean replace(String id, T model) {
         boolean rsl = false;
-        T t = findById(id);
-        if (t != null) {
-            data.set(indexOf(id), model);
+        int index = indexOf(id);
+        if (index != -1) {
+            data.set(index, model);
             rsl = true;
         }
         return rsl;
@@ -33,9 +33,9 @@ public class MemStore<T extends Base> implements Store<T> {
     @Override
     public boolean delete(String id) {
         boolean rsl = false;
-        T t = findById(id);
-        if (t != null) {
-            data.remove(indexOf(id));
+        int index = indexOf(id);
+        if (index != -1) {
+            data.remove(index);
             rsl = true;
         }
         return rsl;
@@ -43,16 +43,20 @@ public class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public T findById(String id) {
-        T rsl = null;
-        for (T datum : data) {
-            if (datum.getId().equals(id)) {
-                rsl = datum;
-                break;
-            }
+        int index = indexOf(id);
+        T el = null;
+        if (index != -1) {
+            el = data.get(index);
         }
-        return rsl;
+        return el;
     }
 
+    /**
+     * Поиск индека элемента по id.
+     *
+     * @param id id
+     * @return индекс элемента.
+     */
     public int indexOf(String id) {
         int rsl = -1;
         for (int i = 0; i < data.size(); i++) {
