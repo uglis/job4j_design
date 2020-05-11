@@ -104,9 +104,13 @@ public class SimpleHashMap<K, V> {
         return new Iterator<>() {
             int countIt = 0;
             int startIt = 0;
+            final int expectedModIt = cellBalance;
 
             @Override
             public boolean hasNext() {
+                if (expectedModIt != cellBalance) {
+                    throw new ConcurrentModificationException();
+                }
                 return countIt < cellBalance;
             }
 

@@ -2,6 +2,7 @@ package ru.job4j.map;
 
 import org.junit.Test;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 import static org.hamcrest.core.Is.is;
@@ -102,5 +103,14 @@ public class SimpleHashMapTest {
         map.insert(2, 2);
         map.insert(3, 3);
         assertThat(map.size(), is(3));
+    }
+
+    @Test(expected = ConcurrentModificationException.class)
+    public void whenHaveEx() {
+        SimpleHashMap<Integer, Integer> map = new SimpleHashMap<>();
+        map.insert(1, 1);
+        Iterator<SimpleHashMap.Node<Integer, Integer>> it = map.iterator();
+        map.insert(2, 2);
+        it.next();
     }
 }
