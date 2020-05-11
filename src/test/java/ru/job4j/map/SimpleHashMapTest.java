@@ -60,4 +60,47 @@ public class SimpleHashMapTest {
         map.insert(17, 1);
         assertThat(map.get(17), is(1));
     }
+
+    @Test
+    public void whenInsertStrings() {
+        SimpleHashMap<String, Integer> map = new SimpleHashMap<>();
+        map.insert("Hello", 1);
+        map.insert("Good morning", 2);
+        map.insert("Good afternoon", 3);
+        map.insert("A", 4);
+        map.insert("H", 5);
+        map.insert("KK", 6);
+        map.insert("AAr", 3);
+        map.insert("FFF", 3);
+        map.insert("423423", 5);
+        map.insert("www.mail.ru", 43);
+        map.insert("google.com", 43);
+        assertThat(map.get("Hello"), is(1));
+    }
+
+    @Test
+    public void whenInsertUsers() {
+        SimpleHashMap<User, Integer> map = new SimpleHashMap<>();
+        map.insert(new User("1", 3, "12.12.125"), 34);
+        map.insert(new User("1", 3, "12.12.125"), 53);
+        map.insert(new User("5", 1, "12.11.12868"), 12);
+        map.insert(new User("2", 3, "02.12.1223"), 7);
+        map.insert(new User("3", 4, "12.11.12454"), 1);
+        map.insert(new User("6", 3, "022.10.1255"), 7);
+        map.insert(new User("5", 1, "12.11.12868"), 12);
+        map.insert(new User("9", 67, "07.12.12234"), 1);
+        map.insert(new User("10", 468, "12.12.122423"), 1);
+        map.insert(new User("6", 3, "022.10.1255"), 7);
+        map.insert(new User("1", 3, "12.12.125"), 3);
+        assertThat(map.get(new User("1", 3, "12.12.125")), is(3));
+    }
+
+    @Test
+    public void whenGetSize() {
+        SimpleHashMap<Integer, Integer> map = new SimpleHashMap<>();
+        map.insert(1, 1);
+        map.insert(2, 2);
+        map.insert(3, 3);
+        assertThat(map.size(), is(3));
+    }
 }

@@ -25,8 +25,10 @@ public class SimpleHashMap<K, V> {
             cellBalance++;
             container[index] = node;
             return true;
-        } else if (node.key == currentNode.key) {
-            return false;
+        } else if (node.key.hashCode() == currentNode.key.hashCode()
+                && node.key.equals(currentNode.key)) {
+            container[index] = node;
+            return true;
         }
         return false;
     }
@@ -38,8 +40,12 @@ public class SimpleHashMap<K, V> {
      * @return значение.
      */
     public V get(K key) {
+        V value = null;
         Node<K, V> node = container[hash(key)];
-        return node.value;
+        if (key.equals(node.key)) {
+            value = node.value;
+        }
+        return value;
     }
 
     /**
@@ -51,7 +57,7 @@ public class SimpleHashMap<K, V> {
     public boolean delete(K key) {
         int index = hash(key);
         Node<K, V> node = container[index];
-        if (node != null) {
+        if (node.key.hashCode() == key.hashCode()) {
             container[index] = null;
             cellBalance--;
             return true;
@@ -66,7 +72,7 @@ public class SimpleHashMap<K, V> {
      * от размера нового массива.
      */
     public void checkEnoughSpace() {
-        if (cellBalance == container.length - 1) {
+        if (cellBalance == (container.length * 0.75)) {
             Node<K, V>[] temp = Arrays.copyOf(container, container.length);
             int size = container.length;
             container = new Node[size * 2];
@@ -81,6 +87,15 @@ public class SimpleHashMap<K, V> {
     }
 
     /**
+     * Длина карты
+     *
+     * @return длина карты.
+     */
+    public int size() {
+        return cellBalance;
+    }
+
+    /**
      * Итератор для прохода по массиву.
      *
      * @return пара
@@ -89,6 +104,7 @@ public class SimpleHashMap<K, V> {
         return new Iterator<>() {
             int countIt = 0;
             int startIt = 0;
+
             @Override
             public boolean hasNext() {
                 return countIt < cellBalance;
@@ -120,8 +136,7 @@ public class SimpleHashMap<K, V> {
      * @return позиция в массиве.
      */
     public int hash(K key) {
-        int h = key.hashCode() % container.length;
-        return h & (container.length - 1);
+        return key.hashCode() == 0 ? 0 : key.hashCode() & (container.length - 1);
     }
 
     static class Node<K, V> {
