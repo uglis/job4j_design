@@ -17,10 +17,14 @@ public class SimpleArray<T> implements Iterable<T> {
 
     public void add(T model) {
         modCount++;
+        checkLength();
+        this.container[point++] = model;
+    }
+
+    private void checkLength() {
         if (point == container.length) {
             this.container = Arrays.copyOf(container, container.length * 2);
         }
-        this.container[point++] = model;
     }
 
     @Override
