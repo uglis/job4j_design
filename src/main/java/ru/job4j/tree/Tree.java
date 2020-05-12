@@ -34,10 +34,7 @@ public class Tree<E> implements SimpleTree<E> {
         boolean rsl = false;
         Optional<Node<E>> father = findBy(parent);
         Optional<Node<E>> daughter = findBy(child);
-        if (father.isEmpty() && daughter.isEmpty()) {
-            root.children.add(new Node<>(child));
-            rsl = true;
-        } else if (father.isPresent() && daughter.isEmpty()) {
+        if (father.isPresent() && daughter.isEmpty()) {
             father.get().children.add(new Node<>(child));
             rsl = true;
         }
