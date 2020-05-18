@@ -1,6 +1,8 @@
 package ru.job4j.analize;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -8,13 +10,17 @@ import java.util.Objects;
  */
 public class Analize {
     public Info diff(List<User> previous, List<User> current) {
+        Map<Integer, User> map = new HashMap<>();
         int changeSize = previous.size() - current.size();
         int changeNames = 0;
-        for (User currUser : current) {
-            for (User prevUser : previous) {
-                if (currUser.equals(prevUser) && !currUser.getName().equals(prevUser.getName())) {
-                    changeNames++;
-                }
+        for (User user : previous) {
+            map.put(user.getId(), user);
+        }
+        for (User user : current) {
+            if (map.containsKey(user.getId())
+                    && !user.getName().equals(
+                            map.get(user.getId()).getName())) {
+                changeNames++;
             }
         }
         return new Info(Math.abs(Math.min(0, changeSize)),
