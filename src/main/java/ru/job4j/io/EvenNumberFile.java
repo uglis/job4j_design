@@ -16,7 +16,9 @@ public class EvenNumberFile {
             String[] rsl = sb.toString().split(System.lineSeparator());
             for (String s : rsl) {
                 if (Integer.parseInt(s) % 2 == 0) {
-                    System.out.println(s);
+                    System.out.println(s + " - is even number");
+                } else {
+                    System.out.println(s + " - is odd number");
                 }
             }
         } catch (Exception e) {
