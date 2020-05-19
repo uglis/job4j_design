@@ -33,6 +33,6 @@ public class SearchTest {
                 )
         );
         List<Path> rsl = Search.search(source, "txt");
-        assertThat(rsl, is(expected));
+        assertThat(rsl.containsAll(expected), is(true));
     }
 }
