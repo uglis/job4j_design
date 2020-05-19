@@ -16,9 +16,9 @@ public class SearchFilesTest {
     public void whenCheckPredicate() throws IOException {
         SearchFiles searchFiles = new SearchFiles((path -> path.toFile().getName().endsWith("class")));
         List<Path> expected = List.of(
-                Path.of(".\\src\\data\\cl.class")
+                Path.of("./src/data/cl.class")
         );
-        Path source = Paths.get(".\\src\\data");
+        Path source = Paths.get("./src/data");
         Files.walkFileTree(source, searchFiles);
         List<Path> rsl = searchFiles.getPaths();
         assertThat(rsl, is(expected));
