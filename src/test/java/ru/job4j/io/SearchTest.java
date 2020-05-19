@@ -12,9 +12,9 @@ import static org.junit.Assert.assertThat;
 public class SearchTest {
     @Test
     public void whenSearchEndWithJava() {
-        Path source = Paths.get("C:\\test");
+        Path source = Paths.get(".\\src\\data");
         List<Path> expected = List.of(
-                Path.of("C:\\test\\Hello.java")
+                Path.of(".\\src\\data\\test.java")
         );
         List<Path> rsl = Search.search(source, "java");
         assertThat(rsl, is(expected));
@@ -22,10 +22,12 @@ public class SearchTest {
 
     @Test
     public void whenSearchEndWithTxt() {
-        Path source = Paths.get("C:\\test\\123\\search");
+        Path source = Paths.get(".\\src\\data");
         List<Path> expected = List.of(
-                Path.of("C:\\test\\123\\search\\54.txt"),
-                Path.of("C:\\test\\123\\search\\64.txt")
+                Path.of(".\\src\\data\\server.txt"),
+                Path.of(".\\src\\data\\server1.txt"),
+                Path.of(".\\src\\data\\target.txt"),
+                Path.of(".\\src\\data\\target1.txt")
         );
         List<Path> rsl = Search.search(source, "txt");
         assertThat(rsl, is(expected));
