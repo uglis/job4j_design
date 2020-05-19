@@ -7,9 +7,16 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * 4.1. Сканирование файловой системы. [#279252]
+ * 5. Валидация параметров запуска. [#279254]
  */
 public class Search {
+    public static void main(String[] args) {
+        if (args.length < 2) {
+            throw new IllegalArgumentException("Root folder is null. Usage java -jar dir.jar ROOT_FOLDER.");
+        }
+        search(Paths.get(args[0]), args[1]).forEach(System.out::println);
+    }
+
     /**
      * Сканируем папку и находим файлы с нужным окончанием.
      *
