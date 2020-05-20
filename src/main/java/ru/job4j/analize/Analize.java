@@ -1,9 +1,6 @@
 package ru.job4j.analize;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 2. Статистику по коллекции. [#279202]
@@ -11,21 +8,25 @@ import java.util.Objects;
 public class Analize {
     public Info diff(List<User> previous, List<User> current) {
         Map<Integer, User> map = new HashMap<>();
-        int changeSize = previous.size() - current.size();
+        int deleted = 0;
+        int added = 0;
         int changeNames = 0;
         for (User user : previous) {
+            if (!current.contains(user)) {
+                deleted++;
+            }
             map.put(user.getId(), user);
         }
         for (User user : current) {
             if (map.containsKey(user.getId())
                     && !user.getName().equals(
-                            map.get(user.getId()).getName())) {
+                    map.get(user.getId()).getName())) {
                 changeNames++;
+            } else if (!map.containsKey(user.getId())) {
+                added++;
             }
         }
-        return new Info(Math.abs(Math.min(0, changeSize)),
-                changeNames,
-                Math.max(changeSize, 0));
+        return new Info(added, changeNames, deleted);
     }
 
     public static class Info {

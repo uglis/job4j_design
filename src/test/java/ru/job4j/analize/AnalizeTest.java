@@ -88,4 +88,17 @@ public class AnalizeTest {
         Analize.Info expected = new Analize.Info(0, 3, 3);
         assertThat(info, is(expected));
     }
+
+    @Test
+    public void whenAllChanged() {
+        User u1 = new User(1, "A");
+        User u2 = new User(2, "B");
+        User u3 = new User(3, "C");
+        List<User> previous = List.of(u1, u2, u3);
+        List<User> current = List.of(new User(1, "AA"), u2, new User(4, "D"));
+        Analize.Info result = new Analize().diff(previous, current);
+        assertThat(result.added, is(1));
+        assertThat(result.changed, is(1));
+        assertThat(result.deleted, is(1));
+    }
 }
