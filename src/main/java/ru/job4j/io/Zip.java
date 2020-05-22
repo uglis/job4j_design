@@ -56,14 +56,11 @@ public class Zip {
      *             -d : указываем ныжную директорию.
      *             -e : исключаем не нужные файлы.
      *             -o : название и путь к полученому архиву.
-     * @throws IOException можем получить ошибку при вводе неверных данных.
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Zip zip = new Zip();
         ArgZip argZip = new ArgZip(args);
-        SearchFiles searchFiles = new SearchFiles(path -> !(path.toFile().getName().endsWith(argZip.exclude())));
-        Files.walkFileTree(Paths.get(argZip.directory()), searchFiles);
-        List<Path> paths = searchFiles.getPaths();
+        List<Path> paths = Search.seekBy(Paths.get(argZip.directory()), argZip.exclude());
         zip.packFiles(paths, Paths.get(argZip.output()));
     }
 }
