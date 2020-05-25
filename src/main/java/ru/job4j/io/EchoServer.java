@@ -20,14 +20,21 @@ public class EchoServer {
                      BufferedReader in = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
                     String str;
+                    String answer = "";
                     //noinspection CheckStyle
                     while (!(str = in.readLine()).isEmpty()) {
                         System.out.println(str);
-                        if (str.contains("Bye")) {
-                                flag = false;
+                        if (str.contains("=") && str.contains("Hello")) {
+                           answer = "Hello";
+                        } else if (str.contains("=") && str.contains("Exit")) {
+                            flag = false;
+                        } else if (str.contains("=")) {
+                           answer = str.split("=")[1]
+                                   .split(" ")[0];
                         }
                     }
-                    out.write("HTTP/1.1 200 OK\r\n\\".getBytes());
+                    out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                    out.write(answer.getBytes());
                 }
             }
         }
