@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
  */
 public class ConsoleChat {
     private static final Scanner SCANNER = new Scanner(System.in);
+    private static final String STOP = "стоп";
+    private static final String CONTINUE = "продолжить";
+    private static final String EXIT = "закончить";
 
     public static void main(String[] args) {
         init(args[0], args[1]);
@@ -40,20 +43,22 @@ public class ConsoleChat {
      * @param exit путь к файлу записывающий чат.
      */
     private static void chat(List<String> text, String line, String exit) {
-        try (var out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(exit)))) {
-            while (!line.equals("закончить")) {
-                if (line.equals("стоп")) {
-                    while (!line.equals("продолжтить")) {
-                        out.write(line + System.lineSeparator());
-                        line = SCANNER.nextLine();
-                    }
+        List<String> allChat = new ArrayList<>();
+        while (!line.equals(EXIT)) {
+            if (line.equals(STOP)) {
+                while (!line.equals(CONTINUE)) {
+                    allChat.add(line + System.lineSeparator());
+                    line = SCANNER.nextLine();
                 }
-                out.write(line + System.lineSeparator());
-                String randomText = text.get(new Random().nextInt(text.size() - 1));
-                System.out.println(randomText);
-                out.write(randomText + System.lineSeparator());
-                line = SCANNER.nextLine();
             }
+            allChat.add(line + System.lineSeparator());
+            String randomText = text.get(new Random().nextInt(text.size() - 1));
+            System.out.println(randomText);
+            allChat.add(randomText + System.lineSeparator());
+            line = SCANNER.nextLine();
+        }
+        try (var out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(exit)))) {
+            allChat.forEach(out::write);
         } catch (Exception e) {
             e.printStackTrace();
         }
