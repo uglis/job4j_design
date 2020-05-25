@@ -1,17 +1,22 @@
 package ru.job4j.io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 /**
  * 0. Что такое Socket? [#279269]
  */
 public class EchoServer {
-    public static void main(String[] args) throws IOException {
+    private static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
+
+    public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(9000)) {
             boolean flag = true;
             while (flag) {
@@ -25,18 +30,20 @@ public class EchoServer {
                     while (!(str = in.readLine()).isEmpty()) {
                         System.out.println(str);
                         if (str.contains("=") && str.contains("Hello")) {
-                           answer = "Hello";
+                            answer = "Hello";
                         } else if (str.contains("=") && str.contains("Exit")) {
                             flag = false;
                         } else if (str.contains("=")) {
-                           answer = str.split("=")[1]
-                                   .split(" ")[0];
+                            answer = str.split("=")[1]
+                                    .split(" ")[0];
                         }
                     }
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
                     out.write(answer.getBytes());
                 }
             }
+        } catch (Exception e) {
+            LOG.debug(Arrays.toString(e.getStackTrace()));
         }
     }
 }
