@@ -29,13 +29,15 @@ public class EchoServer {
                     //noinspection CheckStyle
                     while (!(str = in.readLine()).isEmpty()) {
                         System.out.println(str);
-                        if (str.contains("=") && str.contains("Hello")) {
-                            answer = "Hello";
-                        } else if (str.contains("=") && str.contains("Exit")) {
-                            flag = false;
-                        } else if (str.contains("=")) {
-                            answer = str.split("=")[1]
-                                    .split(" ")[0];
+                        if (str.contains("=")) {
+                            if (str.contains("Hello")) {
+                                answer = "Hello";
+                            } else if (str.contains("Exit")) {
+                                flag = false;
+                            } else {
+                                answer = str.split("=")[1]
+                                        .split(" ")[0];
+                            }
                         }
                     }
                     out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
