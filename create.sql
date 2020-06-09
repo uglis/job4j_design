@@ -4,18 +4,18 @@ create database tracker;
 
 create table rules (
 		id serial primary key,
-		rights int
-);
-
-create table rules_values (
-		id serial primary key,
-		describtion varchar(50),
-		id_rules int references rules(id)
+		name varchar(50)
 );
 
 create table roles (
 		id serial primary key,
-		id_rules_values int references rules_values(id)
+		name varchar(50)
+);
+
+create table rules_values (
+		id serial primary key,
+		id_role int references roles(id),
+		id_rules int references rules(id)
 );
 
 create table users (
@@ -55,11 +55,11 @@ create table comments (
 		id_item integer references items(id)
 );
 
-insert into rules(rights) values(1), (2);
+insert into rules(name) values('can do everything'), ('can only order');
 
-insert into rules_values (describtion, id_rules) values ('can do everything', 1), ('can only order', 2);
+insert into roles(name) values ('admin'), ('guest');
 
-insert into roles(id_rules_values) values (1), (2);
+insert into rules_values (id_role, id_rules) values (1, 1), (2, 2);
 
 insert into users(login, password, id_role) values ('Igor', 'igor', 1), ('Olea', 'olea', 2);
 
