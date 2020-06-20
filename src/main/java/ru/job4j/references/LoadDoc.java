@@ -31,6 +31,10 @@ public class LoadDoc {
         }
     }
 
+    public static Cache<String, ArrayList<String>> getCache() {
+        return cache;
+    }
+
     /**
      * Start program with parameter.
      *
