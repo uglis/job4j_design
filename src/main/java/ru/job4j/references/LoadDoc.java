@@ -4,35 +4,62 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Реализации кеша на SoftReference [#279308]
  */
 public class LoadDoc {
-    private static Cache<String, ArrayList<String>> cache = new Cache<>();
+    private Map<String, SoftReference<String>> cache = new HashMap<>();
+
+    /**
+     * add pair to cache.
+     *
+     * @param key   key.
+     * @param value value
+     */
+    public void add(String key, SoftReference<String> value) {
+        cache.put(key, value);
+    }
+
+    /**
+     * Read the contents of the file.
+     *
+     * @param path file.
+     * @return line.
+     */
+    public String readFile(String path) {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            reader.lines().forEach(line -> sb.append(line).append(System.lineSeparator()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+
+    /**
+     * @return cache.
+     */
+    public Map<String, SoftReference<String>> getCache() {
+        return cache;
+    }
 
     /**
      * checking if cache has value of this key.
      * if cache doesn't have this key or value is null, will be downloaded from file.
      *
-     * @param file path.
+     * @param key path.
      */
-    public static void load(String file) {
-        if (cache.getCache().get(file) == null) {
-            ArrayList<String> lines = new ArrayList<>();
-            SoftReference<ArrayList<String>> soft = new SoftReference<>(lines);
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                reader.lines().forEach(lines::add);
-                cache.add(file, soft);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public String load(String key) {
+        SoftReference<String> rsl = null;
+        if (cache.get(key) == null) {
+            String value = readFile(key);
+            rsl = new SoftReference<>(value);
+            add(key, rsl);
         }
-    }
-
-    public static Cache<String, ArrayList<String>> getCache() {
-        return cache;
+        return rsl != null ? rsl.get() : "null";
     }
 
     /**
@@ -41,7 +68,7 @@ public class LoadDoc {
      * @param args path
      */
     public static void main(String[] args) {
-        LoadDoc.load(args[0]);
-        System.out.println(cache.getCache().get(args[0]).get());
+        LoadDoc loadDoc = new LoadDoc();
+        System.out.println(loadDoc.load(args[0]));
     }
 }
