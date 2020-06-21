@@ -53,13 +53,12 @@ public class LoadDoc {
      * @param key path.
      */
     public String load(String key) {
-        SoftReference<String> rsl = null;
-        if (cache.get(key) == null) {
-            String value = readFile(key);
-            rsl = new SoftReference<>(value);
-            add(key, rsl);
+        String rsl = cache.get(key) != null ? cache.get(key).get() : null;
+        if (rsl == null) {
+            rsl = readFile(key);
+            add(key, new SoftReference<>(rsl));
         }
-        return rsl != null ? rsl.get() : "null";
+        return rsl;
     }
 
     /**
