@@ -1,10 +1,7 @@
 package ru.job4j.srp;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.swing.text.BadLocationException;
-import javax.swing.text.html.HTMLDocument;
 import java.util.Calendar;
 
 import static org.hamcrest.core.Is.is;
@@ -27,16 +24,29 @@ public class ReportEngineTest {
         assertThat(engine.generate(em -> true), is(expect.toString()));
     }
 
-    @Ignore
     @Test
-    public void whenGetReportForProgrammers() throws BadLocationException {
+    public void whenGetReportForProgrammers() {
         MemStore store = new MemStore();
         Calendar now = Calendar.getInstance();
         Employee worker = new Employee("Igor", now, now, 200);
         store.add(worker);
         ReportProgrammers engine = new ReportProgrammers(store);
-        HTMLDocument htmlDocument = new HTMLDocument();
-        assertThat(engine.generate(employee -> true), is(htmlDocument.getText(0, htmlDocument.getLength())));
+        StringBuilder expected = new StringBuilder()
+                .append("<! DOCTYPE html>").append(System.lineSeparator())
+                .append("<html>").append(System.lineSeparator())
+                .append("<body>").append(System.lineSeparator())
+                .append(System.lineSeparator())
+                .append("h1>Name; Hired; Fired; Salary;</h1>").append(System.lineSeparator())
+                .append("<p>")
+                .append(worker.getName()).append(";")
+                .append(worker.getHired()).append(";")
+                .append(worker.getFired()).append(";")
+                .append(worker.getSalary()).append(";")
+                .append("</p>").append(System.lineSeparator())
+                .append(System.lineSeparator())
+                .append("</body>").append(System.lineSeparator())
+                .append("</html");
+        assertThat(engine.generate(em -> true), is(expected.toString()));
     }
 
     @Test
