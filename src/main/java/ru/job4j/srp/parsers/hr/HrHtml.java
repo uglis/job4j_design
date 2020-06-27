@@ -1,27 +1,23 @@
-package ru.job4j.srp;
+package ru.job4j.srp.parsers.hr;
 
-import java.util.function.Predicate;
+import ru.job4j.srp.Employee;
+import ru.job4j.srp.parsers.Parse;
 
-public class ReportProgrammers implements Report {
-    private Store store;
+import java.util.List;
 
-    public ReportProgrammers(Store store) {
-        this.store = store;
-    }
-
+public class HrHtml implements Parse {
     @Override
-    public String generate(Predicate<Employee> filter) {
+    public String parse(List<Employee> list) {
         StringBuilder text = new StringBuilder();
         text.append("<! DOCTYPE html>").append(System.lineSeparator())
                 .append("<html>").append(System.lineSeparator())
                 .append("<body>").append(System.lineSeparator())
                 .append(System.lineSeparator())
-                .append("h1>Name; Hired; Fired; Salary;</h1>").append(System.lineSeparator());
-        for (Employee employee : store.findBy(filter)) {
+                .append("<h1>Name; Salary;</h1>").append(System.lineSeparator());
+        list.sort((o1, o2) -> Double.compare(o2.getSalary(), o1.getSalary()));
+        for (Employee employee : list) {
             text.append("<p>")
                     .append(employee.getName()).append(";")
-                    .append(employee.getHired()).append(";")
-                    .append(employee.getFired()).append(";")
                     .append(employee.getSalary()).append(";")
                     .append("</p>").append(System.lineSeparator())
                     .append(System.lineSeparator())
