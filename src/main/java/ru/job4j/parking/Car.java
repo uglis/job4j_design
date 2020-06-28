@@ -14,6 +14,10 @@ abstract public class Car {
         this.typeCar = typeCar;
     }
 
+    public CarType getTypeCar() {
+        return typeCar;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
