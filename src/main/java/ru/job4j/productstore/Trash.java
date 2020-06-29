@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Storage where products have percent is above 100.
  */
-public class Trash {
+public class Trash implements Storage, CheckBalancePercent {
     public static Trash instance;
     private List<Food> store = new ArrayList<>();
 
@@ -24,6 +24,19 @@ public class Trash {
     }
     public void add(Food food) {
         store.add(food);
+    }
+
+    @Override
+    public boolean accept(Food food) {
+        int percent = checkBalancePercent(food.getCreateDate(), food.getExpiredDate());
+        return percent > 100;
+    }
+
+    @Override
+    public List<Food> clear() {
+        List<Food> foods = new ArrayList<>(store);
+        store.clear();
+        return foods;
     }
 
     public List<Food> getStore() {
