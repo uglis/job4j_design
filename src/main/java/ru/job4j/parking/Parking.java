@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Parking implements Park {
-    private int size;
-    private List<Car> cars = new ArrayList<>(size);
-    private int point = 0;
+    private int sizePass;
+    private int sizeTruck;
+    private List<Car> carPassenger = new ArrayList<>(sizePass);
+    private List<Car> trucks = new ArrayList<>(sizeTruck);
+    private int pointPass = 0;
+    private int pointTruck = 0;
 
-    public Parking(int size) {
-        this.size = size;
+    public Parking(int sizePass, int sizeTruck) {
+        this.sizePass = sizePass;
+        this.sizeTruck = sizeTruck;
     }
 
     /**
@@ -20,12 +24,16 @@ public class Parking implements Park {
     @Override
     public void add(Car car) {
         if (checkFreePlace(car)) {
-            if (car.getTypeCar().equals(CarType.PassengerCar)) {
-                point++;
+            if (car.getTypeCar().equals(CarType.Truck) && pointTruck == sizeTruck) {
+                carPassenger.add(car);
+                pointPass += 2;
+            } else if (car.getTypeCar().equals(CarType.PassengerCar)) {
+                carPassenger.add(car);
+                pointPass++;
             } else {
-                point += 2;
+                trucks.add(car);
+                pointTruck++;
             }
-            cars.add(car);
         }
     }
 
@@ -33,17 +41,16 @@ public class Parking implements Park {
      * Checking free place for new car.
      *
      * @param car car.
-     * @return have or not place. 
+     * @return have or not place.
      */
     @Override
     public boolean checkFreePlace(Car car) {
         boolean rsl = false;
-        if (point < size) {
-            if (car.getTypeCar().equals(CarType.Truck) && size - point >= 2) {
-                rsl = true;
-            } else if (car.getTypeCar().equals(CarType.PassengerCar) && size - point >= 1) {
-                rsl = true;
-            }
+        if (car.getTypeCar().equals(CarType.PassengerCar) && pointPass < carPassenger.size()) {
+            rsl = true;
+        } else if (car.getTypeCar().equals(CarType.Truck) && pointTruck < trucks.size()
+                || pointPass < (sizePass - 1)) {
+            rsl = true;
         }
         return rsl;
     }
