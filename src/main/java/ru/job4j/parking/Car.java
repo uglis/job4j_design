@@ -4,18 +4,15 @@ import java.util.Objects;
 
 abstract public class Car {
     private String name;
-    private String color;
-    private CarType typeCar;
+    private int sizeCar;
 
-
-    public Car(String name, String color, CarType typeCar) {
+    public Car(String name, int sizeCar) {
         this.name = name;
-        this.color = color;
-        this.typeCar = typeCar;
+        this.sizeCar = sizeCar;
     }
 
-    public CarType getTypeCar() {
-        return typeCar;
+    public int getSizeCar() {
+        return sizeCar;
     }
 
     @Override
@@ -27,22 +24,20 @@ abstract public class Car {
             return false;
         }
         Car car = (Car) o;
-        return Objects.equals(name, car.name)
-                && Objects.equals(color, car.color)
-                && typeCar == car.typeCar;
+        return sizeCar == car.sizeCar
+                && Objects.equals(name, car.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, color, typeCar);
+        return Objects.hash(name, sizeCar);
     }
 
     @Override
     public String toString() {
         return "Car{"
                 + "name='" + name + '\''
-                + ", color='" + color + '\''
-                + ", typeCar=" + typeCar
+                + ", sizeCar=" + sizeCar
                 + '}';
     }
 }

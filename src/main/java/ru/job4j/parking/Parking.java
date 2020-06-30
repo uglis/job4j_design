@@ -8,8 +8,8 @@ public class Parking implements Park {
     private int sizeTruck;
     private List<Car> carPassenger = new ArrayList<>(sizePass);
     private List<Car> trucks = new ArrayList<>(sizeTruck);
-    private int pointPass = 0;
-    private int pointTruck = 0;
+    private int passPlaces;
+    private int truckPlaces;
 
     public Parking(int sizePass, int sizeTruck) {
         this.sizePass = sizePass;
@@ -24,15 +24,15 @@ public class Parking implements Park {
     @Override
     public void add(Car car) {
         if (checkFreePlace(car)) {
-            if (car.getTypeCar().equals(CarType.Truck) && pointTruck == sizeTruck) {
+            if (car.getSizeCar() == 1) {
                 carPassenger.add(car);
-                pointPass += 2;
-            } else if (car.getTypeCar().equals(CarType.PassengerCar)) {
+                passPlaces++;
+            } else if (car.getSizeCar() > 1 && truckPlaces == sizeTruck) {
                 carPassenger.add(car);
-                pointPass++;
+                passPlaces += car.getSizeCar();
             } else {
                 trucks.add(car);
-                pointTruck++;
+                truckPlaces++;
             }
         }
     }
@@ -46,10 +46,11 @@ public class Parking implements Park {
     @Override
     public boolean checkFreePlace(Car car) {
         boolean rsl = false;
-        if (car.getTypeCar().equals(CarType.PassengerCar) && pointPass < carPassenger.size()) {
+        if (passPlaces < sizePass && car.getSizeCar() == 1) {
             rsl = true;
-        } else if (car.getTypeCar().equals(CarType.Truck) && pointTruck < trucks.size()
-                || pointPass < (sizePass - 1)) {
+        } else if (car.getSizeCar() > 1
+                && sizeTruck - truckPlaces >= car.getSizeCar()
+                || sizePass - passPlaces >= car.getSizeCar()) {
             rsl = true;
         }
         return rsl;
