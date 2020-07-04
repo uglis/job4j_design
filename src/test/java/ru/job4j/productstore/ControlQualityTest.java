@@ -60,4 +60,17 @@ public class ControlQualityTest {
         Trash trash = Trash.getInstance();
         assertThat(trash.getStore().get(0), is(new Meat("pig", meatCreate, meatExp, 20, 0)));
     }
+
+    @Test
+    public void whenResortStorage() throws ParseException {
+        Date createJuice = format.parse("12 06 2020");
+        Date expJuice = format.parse("12 11 2020");
+        Juice juice = new Juice("orange", createJuice, expJuice, 20, 0);
+        quality.distribute(juice);
+        Food foodWarehouse = Warehouse.getInstance().getStore().get(0);
+        Date date = format.parse("12 07 2020");
+        Warehouse.getInstance().getStore().get(0).setExpiredDate(date);
+        quality.resort();
+        assertThat(Shop.getInstance().getStore().get(0), is(foodWarehouse));
+    }
 }

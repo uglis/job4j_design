@@ -41,6 +41,10 @@ abstract public class Food {
         return discount;
     }
 
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
+    }
+
     public void setDiscount(int discount) {
         this.discount = discount;
     }

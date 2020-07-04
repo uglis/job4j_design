@@ -21,9 +21,9 @@ public class ControlQuality {
     }
 
     /**
-     * Add food to foods.
+     * Add food to storage.
      *
-     * @param food type of food.
+     * @param food food.
      */
     public void distribute(Food food) {
         for (Storage st : storage) {
@@ -31,6 +31,17 @@ public class ControlQuality {
                 st.add(food);
                 break;
             }
+        }
+    }
+
+    /**
+     * Resort storage.
+     */
+    public void resort() {
+        List<Food> foods = new ArrayList<>(warehouse.clear());
+        foods.addAll(shop.clear());
+        for (Food food : foods) {
+            distribute(food);
         }
     }
 }
