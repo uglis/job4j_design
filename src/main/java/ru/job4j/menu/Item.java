@@ -1,16 +1,26 @@
 package ru.job4j.menu;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class MenuItem {
+/**
+ * Data model "Item".
+ */
+public class Item {
     private String name;
+    private List<Item> subItems = new ArrayList<>();
 
-    public MenuItem(String name) {
+    public Item(String name) {
         this.name = name;
     }
 
     public String getName() {
         return name;
+    }
+
+    public List<Item> getSubItems() {
+        return subItems;
     }
 
     @Override
@@ -21,8 +31,8 @@ public class MenuItem {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        MenuItem point = (MenuItem) o;
-        return Objects.equals(name, point.name);
+        Item item = (Item) o;
+        return Objects.equals(name, item.name);
     }
 
     @Override
@@ -32,7 +42,7 @@ public class MenuItem {
 
     @Override
     public String toString() {
-        return "Point{"
+        return "Item{"
                 + "name='" + name + '\''
                 + '}';
     }
